@@ -1,13 +1,17 @@
 import 'package:fetch_product/resources/app_colors.dart';
 import 'package:fetch_product/resources/app_text_styles.dart';
-import 'package:fetch_product/resources/image_urls.dart';
+import 'package:fetch_product/src/auth/view/signup_screen.dart';
 import 'package:fetch_product/src/auth/vm/auth_vm.dart';
+import 'package:fetch_product/src/base/view/home_view.dart';
 import 'package:fetch_product/utils/custom_widgets/custom_button.dart';
 import 'package:fetch_product/utils/hights_widths.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../../utils/custom_widgets/textformfiel_widget.dart';
+import '../../../utils/custom_widgets/toasters.dart';
 
 class LoginScreen extends StatefulWidget {
   static String route = "/loginScreen";
@@ -41,11 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              h7,
-              GestureDetector(
-                onTap: () {},
-                child: Image.asset(AppImages.logo, height: 20.h),
-              ),
               h2,
               Text(
                 "Login",
@@ -114,22 +113,51 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomButton(
                 buttonTitle: "Login",
                 tap: () async {
-                  await login(vm);
+                  if (_formKey.currentState!.validate()) {
+                    vm.signInByFirebase(emailController.text.toString(),
+                        passwordController.text.toString());
+                  }
                 },
               ),
+              // Spacer(),
             ]),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(bottom: 8.sp),
+          child: authBottomWidget(
+            "Don't have an account?",
+            '  Sign up',
+            () => Get.offAllNamed(SignupScreen.route),
           ),
         ),
       );
     }));
   }
 
-  Future<void> login(AuthVM vm) async {
-    if (_formKey.currentState!.validate()) {
-      await context.read<AuthVM>().signIn(
-            emailController.text.trim(),
-            passwordController.text.trim(),
-          );
-    }
+  static Widget authBottomWidget(
+      String firstTxt, String scndTxt, Function() onTap) {
+    return InkWell(
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
+      onTap: onTap,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            firstTxt,
+            style: AppTextStyles()
+                .poppinsMedium(fontSize: 10.sp, color: Colors.black),
+          ),
+          Text(
+            scndTxt,
+            style: AppTextStyles().poppinsMedium(
+                fontSize: 12.sp,
+                color: AppColors().primary,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
   }
 }

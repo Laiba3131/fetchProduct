@@ -1,43 +1,35 @@
-import 'package:fetch_product/services/auth_services.dart';
-import 'package:fetch_product/src/auth/model/user_model.dart';
 import 'package:fetch_product/src/auth/view/login_screen.dart';
+import 'package:fetch_product/src/base/view/home_view.dart';
 import 'package:fetch_product/utils/custom_widgets/toasters.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class AuthVM extends ChangeNotifier {
-  final BaseAuth _auth = Auth();
-  UserModel userModel = UserModel();
+  final _auth = FirebaseAuth.instance;
 
-  Future<bool> signUp(UserModel? ud, {required String pass}) async {
-    bool result = false;
+  signupByFirebase(email, password) async {
     try {
       ZBotToast.loadingShow();
-      debugPrint('${ud!.email},${ud.name},$pass');
-      _auth.createUserWithEmailPassword(ud.email ?? "", pass);
-
-      Get.offAllNamed(LoginScreen.route);
-
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       ZBotToast.loadingClose();
-      result = true;
-      notifyListeners();
+      Get.snackbar('Error', "SignUp Successfully");
+      Get.toNamed(LoginScreen.route);
     } catch (e) {
-      ZBotToast.loadingClose();
+      Get.snackbar('Error', e.toString());
     }
-    return result;
   }
 
-  Future<void> signIn(String email, String pass) async {
+  signInByFirebase(email, password) async {
     try {
       ZBotToast.loadingShow();
-      _auth.signInWithEmailPassword(email, pass);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
       ZBotToast.loadingClose();
-      notifyListeners();
+      Get.snackbar('Error', "Login Succesfully");
+      Get.toNamed(HomeView.route);
     } catch (e) {
-      String error = e.toString().split(']').toList().last;
-      debugPrint("userModel $error SOmething is incorrect");
-      ZBotToast.loadingClose();
+      Get.snackbar('Error', e.toString());
     }
   }
 

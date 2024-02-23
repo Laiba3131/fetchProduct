@@ -1,49 +1,49 @@
-import 'package:fetch_product/resources/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../vm/base_vm.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeView extends StatefulWidget {
-  static String route = '/HomeView';
-  const HomeView({super.key});
-
+  static String route = '/home';
   @override
-  State<HomeView> createState() => _HomeViewState();
+  _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+  List<dynamic> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  Future<void> fetchProducts() async {
+    final response =
+        await http.get(Uri.parse('https://fakestoreapi.com/products'));
+    if (response.statusCode == 200) {
+      setState(() {
+        products = jsonDecode(response.body);
+      });
+    } else {
+      print('Failed to fetch products');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductVM>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'All products',
-          style: AppTextStyles().poppinsMedium(),
-        ),
+        title: Text('Product List'),
       ),
-      body: FutureBuilder(
-        future: productProvider.fetchProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return ListView.builder(
-              itemCount: productProvider.products.length,
-              itemBuilder: (context, index) {
-                final product = productProvider.products[index];
-                return ListTile(
-                  title: Text(product.title),
-                  subtitle: Text(product.category),
-                  leading: Image.network(product.image),
-                  trailing: Text('\$${product.price.toStringAsFixed(2)}'),
-                );
-              },
-            );
-          }
+      body: ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return ListTile(
+            title: Text(product['title']),
+            subtitle: Text(product['description']),
+            leading: Image.network(product['image']),
+          );
         },
       ),
     );

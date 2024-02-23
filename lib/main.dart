@@ -19,7 +19,7 @@ Future<void> main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => AuthVM()),
     ChangeNotifierProvider(create: (context) => ProductVM()),
-  ], child: const MyApp('PRO BUDDY')));
+  ], child: const MyApp('Fetch Products')));
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           builder: BotToastInit(),
           navigatorObservers: [BotToastNavigatorObserver()],
           debugShowCheckedModeBanner: false,
-          title: 'PRO BUDDY',
+          title: 'Fetch Products',
           initialRoute: SplashPage.route,
           getPages: AppPages.pages,
         ),

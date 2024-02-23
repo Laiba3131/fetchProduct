@@ -30,6 +30,6 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> onReady(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3));
-    Get.toNamed(SignupScreen.route);
+    Get.toNamed(LoginScreen.route);
   }
 }
