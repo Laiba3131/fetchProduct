@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'src/base/view/another_multiSelect.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -40,8 +42,9 @@ class MyApp extends StatelessWidget {
           navigatorObservers: [BotToastNavigatorObserver()],
           debugShowCheckedModeBanner: false,
           title: 'Fetch Products',
-          initialRoute: SplashPage.route,
-          getPages: AppPages.pages,
+          home: MultiSelectExample(),
+          // initialRoute: SplashPage.route,
+          // getPages: AppPages.pages,
         ),
       );
     });

@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:fetch_product/src/base/view/another_multiSelect.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
         brightness: Brightness.dark,
       ),
-      home: const HomePage(),
+      home: const MultiSelectExample(),
     );
   }
 }

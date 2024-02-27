@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
           body: Card(
             child: Center(
               child: AnimatedPieChart(
+                sort: true,
                 stokeWidth: 8.0,
                 padding: 3.0,
                 animatedSpeed: 500,
