@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:fetch_product/firebase_options.dart';
 import 'package:fetch_product/routes/app_routes.dart';
 import 'package:fetch_product/src/auth/vm/auth_vm.dart';
+import 'package:fetch_product/src/base/view/home_view.dart';
 import 'package:fetch_product/src/base/vm/base_vm.dart';
 import 'package:fetch_product/src/splash/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'src/base/view/another_multiSelect.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +20,7 @@ Future<void> main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => AuthVM()),
     ChangeNotifierProvider(create: (context) => ProductVM()),
-  ], child: const MyApp('Fetch Products')));
+  ], child: const MyApp('bsjd')));
 }
 
 class MyApp extends StatelessWidget {
@@ -42,9 +41,9 @@ class MyApp extends StatelessWidget {
           navigatorObservers: [BotToastNavigatorObserver()],
           debugShowCheckedModeBanner: false,
           title: 'Fetch Products',
-          home: MultiSelectExample(),
-          // initialRoute: SplashPage.route,
-          // getPages: AppPages.pages,
+          // home: HomeView(),
+          initialRoute: SplashPage.route,
+          getPages: AppPages.pages,
         ),
       );
     });
